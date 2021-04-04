@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"strings"
 	"sync"
 
 	"github.com/Schmenn/sherlock/sites"
@@ -9,16 +11,16 @@ import (
 )
 
 var siteList = map[string]func(username string) bool{
-	"GitHub":    sites.GitHub,
-	"Reddit":    sites.Reddit,
-	"Osu!":      sites.Osu,
-	"GitLab":    sites.GitLab,
-	"Instagram": sites.Instagram,
-	"TikTok":    sites.TikTok,
-	"Chess.com": sites.Chess,
-	"Kik":       sites.Kik,
-	"Steam":     sites.Steam,
-	"Twitch":    sites.Twitch,
+	"https://github.com/{}":                       sites.GitHub,
+	"https://www.reddit.com/user/{}":              sites.Reddit,
+	"https://osu.ppy.sh/users/{}":                 sites.Osu,
+	"https://gitlab.com/api/v4/users?username={}": sites.GitLab,
+	"https://instagram.com/{}":                    sites.Instagram,
+	"https://tiktok.com/@{}":                      sites.TikTok,
+	"https://www.chess.com/member/{}":             sites.Chess,
+	"http://ws2.kik.com/user/{}":                  sites.Kik,
+	"https://steamcommunity.com/profiles/{}":      sites.Steam,
+	"https://twitch.tv/{}":                        sites.Twitch,
 }
 
 func main() {
@@ -32,9 +34,9 @@ func main() {
 		wg.Add(1)
 		go func(site string, sitefunc func(username string) bool, name string) {
 			if sitefunc(name) {
-				color.HiGreen("[X] " + site)
+				color.HiGreen(fmt.Sprintf("[X] %s", strings.Replace(site, "{}", name, 1)))
 			} else {
-				color.HiRed("[ ] " + site)
+				color.HiRed("[ ] " + strings.Split(strings.Split(site, "//")[1], "/")[0])
 			}
 			wg.Done()
 		}(site, sitefunc, name)
