@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"sync"
 
@@ -18,11 +17,11 @@ var siteList = map[string]func(username string) bool{
 	"TikTok":    sites.TikTok,
 	"Chess.com": sites.Chess,
 	"Kik":       sites.Kik,
+	"Steam":     sites.Steam,
+	"Twitch":    sites.Twitch,
 }
 
 func main() {
-	fmt.Println(os.Args[0])
-
 	if len(os.Args) < 2 {
 		color.HiRed("Please specify a username")
 		os.Exit(1)
