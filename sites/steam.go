@@ -1,7 +1,6 @@
 package sites
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -9,13 +8,12 @@ import (
 
 // Steam site
 func Steam(username string) bool {
-	//<title>Steam Community :: Error</title>
-	resp, err := http.Get(fmt.Sprintf("https://steamcommunity.com/profiles/%v/", username))
+	res, err := http.Get("https://steamcommunity.com/id/"+username)
 	if err != nil {
 		return false
 	}
-	defer resp.Body.Close()
-	b, err := io.ReadAll(resp.Body)
+	defer res.Body.Close()
+	b, err := io.ReadAll(res.Body)
 	if err != nil {
 		return false
 	}
