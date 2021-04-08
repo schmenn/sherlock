@@ -1,46 +1,70 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"strings"
 	"sync"
 
-	"github.com/Schmenn/sherlock/sites"
+	"github.com/Schmenn/sherlock/requests"
 	"github.com/fatih/color"
 )
 
-var siteList = map[string]func(username string) bool{
-	"https://github.com/{}":                       sites.GitHub,
-	"https://www.reddit.com/user/{}":              sites.Reddit,
-	"https://osu.ppy.sh/users/{}":                 sites.Osu,
-	"https://gitlab.com/api/v4/users?username={}": sites.GitLab,
-	"https://instagram.com/{}":                    sites.Instagram,
-	"https://tiktok.com/@{}":                      sites.TikTok,
-	"https://www.chess.com/member/{}":             sites.Chess,
-	"http://ws2.kik.com/user/{}":                  sites.Kik,
-	"https://steamcommunity.com/profiles/{}":      sites.Steam,
-	"https://twitch.tv/{}":                        sites.Twitch,
+// SitesStruct is what's seen in the sites.json file
+type SitesStruct struct {
+	URL      string      `json:"url"`
+	PrintURL string      `json:"printURL"`
+	Method   string      `json:"method"`
+	Check    string      `json:"check"`
+	Body     string      `json:"body"`
+	Match    interface{} `json:"match"`
+	Headers  [][]string  `json:"headers"`
 }
 
 func main() {
+
 	if len(os.Args) < 2 {
 		color.HiRed("Please specify a username")
 		os.Exit(1)
 	}
 	name := os.Args[1]
+	f, err := os.ReadFile("sites.json")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(2)
+	}
+	var sites []SitesStruct
+	err = json.Unmarshal(f, &sites)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(3)
+	}
 	var wg sync.WaitGroup
-	for site, sitefunc := range siteList {
+	for _, site := range sites {
 		wg.Add(1)
-		go func(site string, sitefunc func(username string) bool, name string) {
-			if sitefunc(name) {
-				color.HiGreen(fmt.Sprintf("[X] %s", strings.Replace(site, "{}", name, 1)))
-			} else {
-				color.HiRed("[ ] " + strings.Split(strings.Split(site, "//")[1], "/")[0])
+		go func(site SitesStruct) {
+			defer wg.Done()
+			req := requests.NewRequest(site.Method, site.URL, name, site.Body, site.Headers)
+			if site.PrintURL != "" {
+				site.URL = site.PrintURL
 			}
-			wg.Done()
-		}(site, sitefunc, name)
-
+			if req == nil {
+				color.HiRed("[ ] " + strings.Split(strings.Split(site.URL, "//")[1], "/")[0])
+				return
+			}
+			resp := requests.MakeRequest(req, &http.Client{})
+			if resp == nil {
+				color.HiRed("[ ] " + strings.Split(strings.Split(site.URL, "//")[1], "/")[0])
+				return
+			}
+			if requests.CheckValidity(resp, site.Check, site.Match) {
+				color.HiGreen(fmt.Sprintf("[X] %s", strings.Replace(site.URL, "{}", name, 1)))
+			} else {
+				color.HiRed("[ ] " + strings.Split(strings.Split(site.URL, "//")[1], "/")[0])
+			}
+		}(site)
 	}
 	wg.Wait()
 }

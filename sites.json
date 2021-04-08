@@ -1,0 +1,83 @@
+[
+    {
+        "url": "https://gql.twitch.tv/gql",
+        "printURL": "https://twitch.tv/{}",
+        "method": "POST",
+        "check": "body",
+        "body": "{\n\"operationName\": \"PlaybackAccessToken_Template\",\n\"query\": \"query PlaybackAccessToken_Template($login: String!, $isLive: Boolean!, $vodID: ID!, $isVod: Boolean!, $playerType: String!) {  streamPlaybackAccessToken(channelName: $login, params: {platform: \"web\", playerBackend: \"mediaplayer\", playerType: $playerType}) @include(if: $isLive) {    value    signature    __typename  }  videoPlaybackAccessToken(id: $vodID, params: {platform: \"web\", playerBackend: \"mediaplayer\", playerType: $playerType}) @include(if: $isVod) {    value    signature    __typename  }}\",\n\"variables\": {\n\"isLive\": true,\n\"login\": \"{}\",\n\"isVod\": false,\n\"vodID\": \"\",\n\"playerType\": \"site\"\n}\n}",
+        "match": "!{\"streamPlaybackAccessToken\":null}",
+        "headers": [["Client-ID", "kimne78kx3ncx6brgo4mv6wki5h1ko"]]
+    },
+    {
+        "url": "https://github.com/{}",
+        "method": "HEAD",
+        "check": "status",
+        "body": "",
+        "match": 200,
+        "headers": [[]]
+    },
+    {
+        "url": "https://www.reddit.com/user/{}",
+        "method": "GET",
+        "check": "status",
+        "body": "",
+        "match": 200,
+        "headers": [[]]
+    },
+    {
+        "url": "https://osu.ppy.sh/users/{}",
+        "method": "GET",
+        "check": "status",
+        "body": "",
+        "match": 200,
+        "headers": [[]]
+    },
+    {
+        "url": "https://gitlab.com/api/v4/users?username={}",
+        "method": "GET",
+        "check": "body",
+        "body": "",
+        "match": "![]",
+        "headers": [[]]
+    },
+    {
+        "url": "https://instagram.com/{}",
+        "method": "HEAD",
+        "check": "status",
+        "body": "",
+        "match": 200,
+        "headers": [["User-Agent", "Mozilla/5.0 (Linux; Android 6.0.1; SM-G935T Build/MMB29M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/51.0.2704.81 Mobile Safari/537.36 Instagram 8.4.0 Android (23/6.0.1; 560dpi; 1440x2560; samsung; SM-G935T; hero2qltetmo; qcom; en_US"]]
+    },
+    {
+        "url": "https://tiktok.com/@{}",
+        "method": "HEAD",
+        "check": "status",
+        "body": "",
+        "match": 200,
+        "headers": [[]]
+    },
+    {
+        "url": "https://www.chess.com/member/{}",
+        "method": "HEAD",
+        "check": "status",
+        "body": "",
+        "match": 200,
+        "headers": [[]]
+    },
+    {
+        "url": "http://ws2.kik.com/user/{}",
+        "method": "HEAD",
+        "check": "status",
+        "body": "",
+        "match": 200,
+        "headers": [[]]
+    },
+    {
+        "url": "https://steamcommunity.com/id/{}",
+        "method": "GET",
+        "check": "body",
+        "body": "",
+        "match": "!<title>Steam Community :: Error</title>",
+        "headers": [[]]
+    }
+]
