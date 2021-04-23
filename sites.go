@@ -13,4 +13,7 @@ var siteList = map[string]func(username string) bool{
 	"http://ws2.kik.com/user/":                  sites.Kik,
 	"https://steamcommunity.com/id/":            sites.Steam,
 	"https://twitch.tv/":                        sites.Twitch,
+	"https://archive.org/details/@":             sites.ArchiveOrg,
+	"https://hub.docker.com/u/":                 sites.DockerHub,
+	"https://ifttt.com/p/":                      sites.IFTTT,
 }
