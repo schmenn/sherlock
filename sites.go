@@ -16,4 +16,5 @@ var siteList = map[string]func(username string) bool{
 	"https://archive.org/details/@":             sites.ArchiveOrg,
 	"https://hub.docker.com/u/":                 sites.DockerHub,
 	"https://ifttt.com/p/":                      sites.IFTTT,
+	"https://{u}.newgrounds.com":                sites.NewGrounds,
 }

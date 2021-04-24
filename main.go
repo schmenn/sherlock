@@ -19,13 +19,34 @@ func main() {
 		wg.Add(1)
 		go func(site string, sitefunc func(username string) bool, name string) {
 			if sitefunc(name) {
-				color.HiGreen("[+] " + site + name)
+				color.HiGreen("[+] " + makeURL(site, name))
 			} else {
-				color.HiRed("[-] " + strings.Split(strings.Split(site, "//")[1], "/")[0])
+				color.HiRed("[-] " + makeDomain(site))
 			}
 			wg.Done()
 		}(site, sitefunc, name)
 
 	}
 	wg.Wait()
+}
+
+func makeURL(url, username string) string {
+	if strings.Contains(url, "{u}") {
+		return strings.ReplaceAll(url, "{u}", username)
+	}
+	return url + username
+}
+
+func makeDomain(url string) string {
+	return strings.Trim(
+		strings.ReplaceAll(
+			strings.Split(
+				strings.Split(
+					url, "//")[1],
+				"/")[0],
+			"{u}",
+			"",
+		),
+		".",
+	)
 }
