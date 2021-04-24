@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/url"
 	"os"
 	"strings"
 	"sync"
@@ -37,16 +38,8 @@ func makeURL(url, username string) string {
 	return url + username
 }
 
-func makeDomain(url string) string {
-	return strings.Trim(
-		strings.ReplaceAll(
-			strings.Split(
-				strings.Split(
-					url, "//")[1],
-				"/")[0],
-			"{u}",
-			"",
-		),
-		".",
-	)
+func makeDomain(u string) string {
+	u = strings.ReplaceAll(u, "{u}", "placeholder")
+	m, _ := url.Parse(u)
+	return strings.ReplaceAll(m.Hostname(), "placeholder.", "")
 }
