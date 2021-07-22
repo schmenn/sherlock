@@ -4,9 +4,8 @@ import (
 	"net/http"
 )
 
-// GitLab site
-func GitLab(username string) bool {
-	res, err := http.Head("https://gitlab.com/" + username)
+func PyPi(username string) bool {
+	res, err := http.Head("https://pypi.org/user/" + username)
 	if res.StatusCode == http.StatusOK && err == nil {
 		return true
 	}

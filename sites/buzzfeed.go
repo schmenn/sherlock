@@ -2,9 +2,8 @@ package sites
 
 import "net/http"
 
-// Osu site
-func Osu(username string) bool {
-	res, err := http.Head("https://osu.ppy.sh/users/" + username)
+func BuzzFeed(username string) bool {
+	res, err := http.Head("https://www.buzzfeed.com/" + username)
 	if res.StatusCode == http.StatusOK && err == nil {
 		return true
 	}

@@ -2,9 +2,8 @@ package sites
 
 import "net/http"
 
-// Osu site
-func Osu(username string) bool {
-	res, err := http.Head("https://osu.ppy.sh/users/" + username)
+func Telegram(username string) bool {
+	res, err := http.Get("https://t.me/" + username)
 	if res.StatusCode == http.StatusOK && err == nil {
 		return true
 	}

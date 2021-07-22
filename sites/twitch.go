@@ -1,10 +1,11 @@
 package sites
 
 import (
-	"encoding/json"
 	"io"
 	"net/http"
 	"strings"
+
+	json "github.com/json-iterator/go"
 )
 
 type twitchStruct struct {
@@ -12,6 +13,7 @@ type twitchStruct struct {
 	Query         string `json:"query"`
 	Variables     *vars  `json:"variables"`
 }
+
 type vars struct {
 	IsLive     bool   `json:"isLive"`
 	Login      string `json:"login"`
@@ -19,6 +21,7 @@ type vars struct {
 	VodID      string `json:"vodID"`
 	PlayerType string `json:"playerType"`
 }
+
 type twitchResponse struct {
 	Data struct {
 		StreamPlaybackAccessToken interface{} `json:"streamPlaybackAccessToken"`
@@ -42,7 +45,7 @@ func Twitch(username string) bool {
 			VodID:      "",
 			PlayerType: "site",
 		},
-	}, "", "	")
+	}, "", "  ")
 	if err != nil {
 		return false
 	}
@@ -62,6 +65,7 @@ func Twitch(username string) bool {
 		return false
 	}
 	var r twitchResponse
+
 	err = json.Unmarshal(b, &r)
 	if err != nil {
 		return false

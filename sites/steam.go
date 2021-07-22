@@ -8,7 +8,7 @@ import (
 
 // Steam site
 func Steam(username string) bool {
-	res, err := http.Get("https://steamcommunity.com/id/"+username)
+	res, err := http.Get("https://steamcommunity.com/id/" + username)
 	if err != nil {
 		return false
 	}

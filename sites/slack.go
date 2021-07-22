@@ -2,9 +2,8 @@ package sites
 
 import "net/http"
 
-// Osu site
-func Osu(username string) bool {
-	res, err := http.Head("https://osu.ppy.sh/users/" + username)
+func Slack(username string) bool {
+	res, err := http.Head("https://" + username + ".slack.com")
 	if res.StatusCode == http.StatusOK && err == nil {
 		return true
 	}
