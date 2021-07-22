@@ -18,5 +18,4 @@ func OPGG(username string) bool {
 	}
 
 	return !bytes.Contains(b, []byte("This summoner is not registered at OP.GG."))
-
 }
