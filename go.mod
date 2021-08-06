@@ -3,7 +3,7 @@ module github.com/Schmenn/sherlock
 go 1.16
 
 require (
-	github.com/brianvoe/gofakeit/v6 v6.5.0
+	github.com/brianvoe/gofakeit/v6 v6.7.0
 	github.com/fatih/color v1.12.0
 	github.com/json-iterator/go v1.1.11
 	github.com/mattn/go-isatty v0.0.13 // indirect
